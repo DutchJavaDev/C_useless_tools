@@ -5,7 +5,8 @@
 #include <time.h> 
 #include "headers.h"
 #include UTIL_HEADER
-#define LINE_BUFFER 512
+#define LINE_BUFFER 256
+#define MAX_FILE_SIZE 1024
 
 #define CHAR_COUNT 0
 #define LINE_COUNT 1
@@ -16,7 +17,8 @@ FILE* open_file(char* path);
 void char_count(FILE* file);
 void line_count(FILE* file);
 void letter_count(char e, FILE* file);
-void word_count(char** word, FILE* file);
+//void word_count(char** word, FILE* file);
+
 
 int main(int argc, char** argv) 
 {   
@@ -43,11 +45,18 @@ int main(int argc, char** argv)
         break;
 
     case LETTER_COUNT:
-        letter_count(' ', file);
+
+        if(argv[2] == null)
+        {
+            print_string("No letter to search..");
+            exit(0);
+        }
+
+        letter_count(argv[3][0], file);
         break;
 
     case WORD_COUNT:
-        word_count("", file);
+        //word_count(" ", file);
         break;
 
     default:
@@ -72,19 +81,40 @@ FILE* open_file(char* path)
     return file;
 }
 
-void letter_count(char e, FILE* file){
+void letter_count(char e, FILE* file)
+{
+    char char_buffer[MAX_FILE_SIZE];
 
+    memset(&char_buffer[0], 0, MAX_FILE_SIZE);
+
+    int letter_counter = 0;
+
+    while (1)
+    {
+        char* bytes_read = fgets(char_buffer, MAX_FILE_SIZE, file);
+
+        if(bytes_read == null)
+            break;
+    }
+
+    for(int i = 0; i < MAX_FILE_SIZE; i++)
+        if(char_buffer[i] == e) letter_counter++;
+
+    printf("'%c' was found %i times", e, letter_counter);
 }
 
-void word_count(char** word, FILE* file){
-    
-}
+// void word_count(char* word, FILE* file)
+// {
+
+// }
 
 void line_count(FILE* file)
 {
     int line_count = 0;
     
     char char_buffer[LINE_BUFFER];
+
+    memset(&char_buffer[0], 0, LINE_BUFFER);
 
     while (1)
     {
